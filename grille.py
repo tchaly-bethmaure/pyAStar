@@ -14,14 +14,14 @@ class Grille:
 		self.hauteur = size_y
 
 		# générer les cases de la grille
-		for x in range(0, size_x):
-			for y in range(0, size_y):
+		for x in range(0, self.largeur):
+			for y in range(0, self.hauteur):
 				coin = random.randint(0,1)
 				c = None
 				if coin == 1:
 					c = Case(x,y,1)
 				else:
-					c = Case(x,y,999)
+					c = Case(x,y,self.hauteur*self.largeur*10)
 				self.cases.append(c)
 
 		# voisinages de chaque case
@@ -38,7 +38,7 @@ class Grille:
 	def distance(self, case_a,case_b):
 		return abs(case_b.coord_x - case_a.coord_x) + abs(case_b.coord_y + case_a.coord_y)
 
-	def __str__(self):
+	def dessin_grille(self, ):
 		compte = 0
 		dessin = ""
 		for case in self.cases:
@@ -50,6 +50,10 @@ class Grille:
 				dessin += "\n"
 			compte+=1
 		return dessin
+
+	def __str__(self):
+		return self.dessin_grille()
+
 class Case:
 	def __init__(self,x,y,cout):
 		self.coord_x=x
@@ -64,6 +68,9 @@ class Case:
 			return True
 		else:
 			return False
+
+	def get_hash(self):
+		return str(self.coord_x)+","+str(self.coord_y)+","+str(self.cout)
 
 	def __str__(self):
 		return "("+str(self.coord_x)+", "+str(self.coord_y)+")"
