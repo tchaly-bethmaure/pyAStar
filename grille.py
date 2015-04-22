@@ -12,7 +12,7 @@ class Grille:
 		self.cases=[]
 		self.largeur = size_x
 		self.hauteur = size_y
-
+		cout_max = self.hauteur*self.largeur*10
 		# générer les cases de la grille
 		for x in range(0, self.largeur):
 			for y in range(0, self.hauteur):
@@ -21,18 +21,21 @@ class Grille:
 				if coin == 1:
 					c = Case(x,y,1)
 				else:
-					c = Case(x,y,self.hauteur*self.largeur*10)
+					c = Case(x,y,cout_max)
 				self.cases.append(c)
 
 		# voisinages de chaque case
-		coord__cases_voisinnes = Grille.type_voisinge[t_voisinage]
+		coord_cases_voisinnes = Grille.type_voisinge[t_voisinage]
 		for case in self.cases:
-			for x,y in coord__cases_voisinnes:
+			for x,y in coord_cases_voisinnes:
 				if(not case.coord_x + x < 0 
 				and not case.coord_x + x > size_x 
 				and not case.coord_y + y < 0
 				and not case.coord_y + y > size_y):
-					voisin = Case(case.coord_x+x,case.coord_y+y,1)
+					for autre_case in self.cases:
+						if autre_case == Case(case.coord_x+x,case.coord_y+y,1) or autre_case == Case(case.coord_x+x,case.coord_y+y,cout_max):
+							voisin = autre_case
+							break
 					case.voisins.append(voisin)
 
 	def distance(self, case_a,case_b):
